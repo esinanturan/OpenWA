@@ -191,9 +191,20 @@ export class WebhookService {
   }
 
   async dispatch(sessionId: string, event: string, data: Record<string, unknown>): Promise<void> {
-    const webhooks = await this.webhookRepository.find({
-      where: { sessionId, active: true },
-    });
+    // Callers fire-and-forget this (`void dispatch(...)`), so a failure looking up webhooks must be
+    // logged and swallowed here — otherwise it surfaces as an unhandled promise rejection.
+    let webhooks: Webhook[];
+    try {
+      webhooks = await this.webhookRepository.find({
+        where: { sessionId, active: true },
+      });
+    } catch (error) {
+      this.logger.error(`Webhook dispatch lookup failed for ${event}`, String(error), {
+        sessionId,
+        action: 'webhook_dispatch_lookup_failed',
+      });
+      return;
+    }
 
     const matchingWebhooks = webhooks.filter(w => w.events.includes(event) || w.events.includes('*'));
 

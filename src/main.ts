@@ -13,6 +13,7 @@ import {
 } from './config/bootstrap-security';
 import { BullBoardAuthMiddleware } from './common/security/bull-board-auth.middleware';
 import { AuthService } from './modules/auth/auth.service';
+import { createLogger } from './common/services/logger.service';
 import { Request, Response, NextFunction, json, urlencoded } from 'express';
 import * as dotenv from 'dotenv';
 import * as fs from 'fs';
@@ -75,6 +76,14 @@ STORAGE_PATH=./data/media
 }
 
 async function bootstrap() {
+  // Backstop for promise rejections that escaped a local handler (e.g. a fire-and-forget engine-event
+  // dispatch). Node terminates the process on an unhandled rejection by default; for a long-running
+  // self-hosted gateway we'd rather log it and stay up than let one stray rejection kill all sessions.
+  const bootstrapLogger = createLogger('Bootstrap');
+  process.on('unhandledRejection', (reason: unknown) => {
+    bootstrapLogger.error('Unhandled promise rejection', reason instanceof Error ? reason.stack : String(reason));
+  });
+
   // Fail fast: never start production with default/placeholder secrets.
   assertNoDefaultSecretsInProduction({
     nodeEnv: process.env.NODE_ENV,

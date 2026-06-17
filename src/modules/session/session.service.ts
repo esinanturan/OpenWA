@@ -437,7 +437,8 @@ export class SessionService implements OnModuleDestroy, OnModuleInit, OnApplicat
             void this.webhookService.dispatch(id, 'message.received', finalMessage);
             // Emit real-time event to WebSocket clients
             this.eventsGateway.emitMessage(id, finalMessage);
-          });
+          })
+          .catch(err => this.logger.error(`onMessage handler failed for ${id}`, String(err)));
       },
       onMessageCreate: (message): void => {
         // `message_create` fires for every message the account creates, including sends composed on a
@@ -478,7 +479,8 @@ export class SessionService implements OnModuleDestroy, OnModuleInit, OnApplicat
             void this.webhookService.dispatch(id, 'message.sent', finalMessage);
             // Emit real-time event to WebSocket clients (as message.sent, not message.received)
             this.eventsGateway.emitMessageSent(id, finalMessage);
-          });
+          })
+          .catch(err => this.logger.error(`onMessageCreate handler failed for ${id}`, String(err)));
       },
       onMessageAck: (messageId, status: DeliveryStatus): void => {
         this.logger.debug(`Message ack: ${messageId} -> ${status}`, {

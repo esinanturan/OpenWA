@@ -243,6 +243,12 @@ describe('WebhookService', () => {
       mockFetch.mockReset();
     });
 
+    it('resolves (never rejects) when the webhook lookup fails — callers fire-and-forget it', async () => {
+      (repository.find as jest.Mock).mockRejectedValue(new Error('db down'));
+      await expect(service.dispatch('sess-1', 'message.received', { x: 1 })).resolves.toBeUndefined();
+      expect(mockFetch).not.toHaveBeenCalled();
+    });
+
     it('should dispatch to webhooks matching the event', async () => {
       const webhook = createMockWebhook({ events: ['message.received'] });
       (repository.find as jest.Mock).mockResolvedValue([webhook]);

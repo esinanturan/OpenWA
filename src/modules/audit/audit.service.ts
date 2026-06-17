@@ -3,6 +3,7 @@ import { InjectRepository } from '@nestjs/typeorm';
 import { Repository, Between, LessThan } from 'typeorm';
 import { AuditLog, AuditAction, AuditSeverity } from './entities/audit-log.entity';
 import { ApiKey } from '../auth/entities/api-key.entity';
+import { createLogger } from '../../common/services/logger.service';
 
 interface AuditContext {
   apiKey?: ApiKey;
@@ -30,6 +31,8 @@ export interface AuditQueryOptions {
 
 @Injectable()
 export class AuditService {
+  private readonly logger = createLogger('AuditService');
+
   constructor(
     @InjectRepository(AuditLog, 'main')
     private readonly auditRepository: Repository<AuditLog>,
@@ -39,7 +42,7 @@ export class AuditService {
     action: AuditAction,
     context: AuditContext = {},
     severity: AuditSeverity = AuditSeverity.INFO,
-  ): Promise<AuditLog> {
+  ): Promise<AuditLog | null> {
     const auditLog = this.auditRepository.create({
       action,
       severity,
@@ -56,18 +59,29 @@ export class AuditService {
       errorMessage: context.errorMessage || null,
     });
 
-    return this.auditRepository.save(auditLog);
+    // Audit logging is best-effort: a failed insert must never turn a succeeded operation into a 500
+    // (callers await this after the primary side-effect). Log and swallow.
+    try {
+      return await this.auditRepository.save(auditLog);
+    } catch (error) {
+      this.logger.error(
+        `Failed to write audit log for ${String(action)}`,
+        error instanceof Error ? error.stack : String(error),
+        { action: String(action) },
+      );
+      return null;
+    }
   }
 
-  async logInfo(action: AuditAction, context: AuditContext = {}): Promise<AuditLog> {
+  async logInfo(action: AuditAction, context: AuditContext = {}): Promise<AuditLog | null> {
     return this.log(action, context, AuditSeverity.INFO);
   }
 
-  async logWarn(action: AuditAction, context: AuditContext = {}): Promise<AuditLog> {
+  async logWarn(action: AuditAction, context: AuditContext = {}): Promise<AuditLog | null> {
     return this.log(action, context, AuditSeverity.WARN);
   }
 
-  async logError(action: AuditAction, context: AuditContext = {}): Promise<AuditLog> {
+  async logError(action: AuditAction, context: AuditContext = {}): Promise<AuditLog | null> {
     return this.log(action, context, AuditSeverity.ERROR);
   }
 
