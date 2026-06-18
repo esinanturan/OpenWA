@@ -54,6 +54,12 @@ describe('Baileys engine boot (e2e)', () => {
     const baileys = engines.find(e => e.id === 'baileys');
     expect(baileys).toBeDefined();
     expect(baileys?.enabled).toBe(true);
-    expect(baileys?.features).toEqual(['text-messages', 'typing-indicator']);
+    expect(baileys?.features).toEqual([
+      'text-messages',
+      'typing-indicator',
+      'media-messages',
+      'location-messages',
+      'contact-messages',
+    ]);
   });
 });

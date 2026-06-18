@@ -525,12 +525,15 @@ export class BaileysAdapter implements IWhatsAppEngine {
 
   /** Build a minimal WhatsApp-compatible vCard from a neutral contact card. */
   private buildVCard(contact: ContactCard): string {
-    const waid = contact.number.replace(/\D/g, '');
+    const clean = (s: string): string => s.replace(/[\r\n]+/g, ' ');
+    const name = clean(contact.name);
+    const number = clean(contact.number);
+    const waid = number.replace(/\D/g, '');
     return [
       'BEGIN:VCARD',
       'VERSION:3.0',
-      `FN:${contact.name}`,
-      `TEL;type=CELL;type=VOICE;waid=${waid}:${contact.number}`,
+      `FN:${name}`,
+      `TEL;type=CELL;type=VOICE;waid=${waid}:${number}`,
       'END:VCARD',
     ].join('\n');
   }
