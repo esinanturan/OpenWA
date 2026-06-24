@@ -6,11 +6,8 @@ Ships dual CJS + ESM builds with bundled type declarations.
 
 ## Install
 
-> **Not yet published to npm.** Until the first release, install from a checkout
-> of the repo (`cd sdk/javascript && npm install && npm run build`) or from git.
-
 ```bash
-npm install @rmyndharis/openwa   # once published
+npm install @rmyndharis/openwa
 ```
 
 Requires Node.js >= 18 (relies on the global `fetch`).

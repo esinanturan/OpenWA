@@ -6,11 +6,8 @@ A synchronous client built on [httpx](https://www.python-httpx.org/), with bundl
 
 ## Install
 
-> **Not yet published to PyPI.** Until the first release, install from a checkout
-> of the repo (`cd sdk/python && pip install -e .`) or from git.
-
 ```bash
-pip install rmyndharis-openwa   # once published
+pip install rmyndharis-openwa
 ```
 
 Requires Python 3.9+. The importable module is `openwa`.
