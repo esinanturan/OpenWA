@@ -58,12 +58,7 @@ public final class OpenWAClient {
     public final HealthResource health = new HealthResource(this);
 
     public OpenWAClient(ClientConfig config) {
-        if (config.baseUrl == null || config.baseUrl.isBlank()) {
-            throw new IllegalArgumentException("OpenWAClient: baseUrl is required");
-        }
-        if (config.apiKey == null || config.apiKey.isBlank()) {
-            throw new IllegalArgumentException("OpenWAClient: apiKey is required");
-        }
+        // ClientConfig's constructor validates baseUrl/apiKey/timeout, so config is already sound here.
         this.config = config;
         this.transport = config.transport != null ? config.transport : new DefaultHttpTransport();
     }
@@ -119,6 +114,10 @@ public final class OpenWAClient {
         } catch (InterruptedException e) {
             Thread.currentThread().interrupt();
             throw new OpenWAError("Transport interrupted — " + method + " " + path);
+        } catch (IllegalArgumentException e) {
+            // e.g. a JDK-restricted header name in defaultHeaders, or a URI-illegal char — keep it
+            // inside the OpenWAError contract instead of leaking a raw JDK exception to the caller.
+            throw new OpenWAError("Invalid request — " + method + " " + path + ": " + e.getMessage());
         }
         if (res.status() < 200 || res.status() >= 300) {
             throw OpenWAApiError.fromResponse(res.status(), "", res.body(), method + " " + path);

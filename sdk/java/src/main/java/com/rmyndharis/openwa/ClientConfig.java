@@ -1,6 +1,8 @@
 package com.rmyndharis.openwa;
 
 import com.rmyndharis.openwa.http.HttpTransport;
+import java.net.URI;
+import java.net.URISyntaxException;
 import java.time.Duration;
 import java.util.Map;
 
@@ -13,11 +15,42 @@ public final class ClientConfig {
     final HttpTransport transport; // nullable → OpenWAClient supplies DefaultHttpTransport
 
     private ClientConfig(Builder b) {
-        this.baseUrl = b.baseUrl;
-        this.apiKey = b.apiKey;
+        String url = b.baseUrl == null ? null : b.baseUrl.strip();
+        if (url == null || url.isEmpty()) {
+            throw new IllegalArgumentException("OpenWAClient: baseUrl is required");
+        }
+        try {
+            new URI(url);
+        } catch (URISyntaxException e) {
+            throw new IllegalArgumentException("OpenWAClient: baseUrl is not a valid URL: " + url);
+        }
+        String key = b.apiKey == null ? null : b.apiKey.strip();
+        if (key == null || key.isEmpty()) {
+            throw new IllegalArgumentException("OpenWAClient: apiKey is required");
+        }
+        if (hasControlChar(key)) {
+            throw new IllegalArgumentException(
+                "OpenWAClient: apiKey contains illegal characters (whitespace or control) — check for a stray newline");
+        }
+        if (b.timeout != null && (b.timeout.isZero() || b.timeout.isNegative())) {
+            throw new IllegalArgumentException("OpenWAClient: timeout must be positive");
+        }
+        // baseUrl/apiKey are stripped so a trailing newline from a file/env var can't break the request.
+        this.baseUrl = url;
+        this.apiKey = key;
         this.timeout = b.timeout != null ? b.timeout : Duration.ofSeconds(30);
         this.defaultHeaders = b.defaultHeaders != null ? b.defaultHeaders : Map.of();
         this.transport = b.transport;
+    }
+
+    private static boolean hasControlChar(String s) {
+        for (int i = 0; i < s.length(); i++) {
+            char c = s.charAt(i);
+            if (c < 0x20 || c == 0x7f) {
+                return true;
+            }
+        }
+        return false;
     }
 
     public static Builder builder() {

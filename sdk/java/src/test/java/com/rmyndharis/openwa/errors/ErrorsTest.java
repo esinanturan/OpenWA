@@ -44,4 +44,29 @@ class ErrorsTest {
         assertTrue(t.getMessage().contains("30000"));
         assertTrue(t instanceof OpenWAError);
     }
+
+    @Test
+    void blankStatusTextProducesNoDoubleSpace() {
+        // The default transport exposes no HTTP reason phrase, so the client passes "" as statusText.
+        String body = "{\"statusCode\":404,\"message\":\"Session x not found\",\"error\":\"Not Found\"}";
+        OpenWAApiError e = OpenWAApiError.fromResponse(404, "", body, "GET /api/sessions/x");
+        assertTrue(e.getMessage().contains("Session x not found"));
+        assertFalse(e.getMessage().contains("404  "), "must not emit a double space when statusText is blank");
+        assertTrue(e.getMessage().startsWith("OpenWA API 404 — GET /api/sessions/x"));
+    }
+
+    @Test
+    void partialEnvelopeWithoutErrorFieldStillKeepsMessage() {
+        // NestJS default 500 carries {statusCode, message} but no `error` field — the message must survive.
+        String body = "{\"statusCode\":500,\"message\":\"Internal server error\"}";
+        OpenWAApiError e = OpenWAApiError.fromResponse(500, "", body, "GET /api/x");
+        assertEquals(OpenWAApiError.class, e.getClass());
+        assertTrue(e.getMessage().contains("Internal server error"), "message text must not be dropped");
+    }
+
+    @Test
+    void bodylessErrorHasCleanMessage() {
+        OpenWAApiError e = OpenWAApiError.fromResponse(502, "", "", "GET /api/x");
+        assertEquals("OpenWA API 502 — GET /api/x", e.getMessage());
+    }
 }

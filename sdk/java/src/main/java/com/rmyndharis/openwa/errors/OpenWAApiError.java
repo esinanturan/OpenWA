@@ -55,25 +55,32 @@ public class OpenWAApiError extends OpenWAError {
                 "Unexpected redirect (not followed; the API key is never re-sent to a redirect target) — " + context,
                 status, null, null);
         }
-        JsonObject env = null;
+        JsonObject obj = null;
         Object parsedBody = rawBody;
         if (rawBody != null && !rawBody.isEmpty()) {
             try {
                 JsonElement el = GSON.fromJson(rawBody, JsonElement.class);
                 if (el != null && el.isJsonObject()) {
-                    JsonObject o = el.getAsJsonObject();
-                    parsedBody = o;
-                    if (o.has("statusCode") && o.has("message") && o.has("error")) {
-                        env = o;
-                    }
+                    obj = el.getAsJsonObject();
+                    parsedBody = obj;
                 }
             } catch (RuntimeException ignore) {
                 // leave parsedBody as the raw text
             }
         }
-        String errorKind = env != null && env.has("error") ? env.get("error").getAsString() : null;
-        String messageText = describe(env != null ? env.get("message") : null, statusText);
-        String message = "OpenWA API " + status + " " + statusText + " — " + context + ": " + messageText;
+        // Pull `message`/`error` from any JSON object body, not only a full NestJS envelope, so a partial
+        // body (e.g. a 500 with {statusCode, message} but no `error`) still yields a useful message.
+        String errorKind = obj != null && obj.has("error") && obj.get("error").isJsonPrimitive()
+            ? obj.get("error").getAsString()
+            : null;
+        JsonElement messageEl = obj != null && obj.has("message") ? obj.get("message") : null;
+        String fallback = rawBody != null && !rawBody.isBlank() ? rawBody : (statusText == null ? "" : statusText);
+        String messageText = describe(messageEl, fallback);
+        // java.net.http exposes no HTTP reason phrase, so statusText is often blank — omit it rather than
+        // emitting a double space, and omit the trailing ": " when there is no message text at all.
+        String reason = statusText == null || statusText.isBlank() ? "" : " " + statusText;
+        String tail = messageText.isEmpty() ? "" : ": " + messageText;
+        String message = "OpenWA API " + status + reason + " — " + context + tail;
         return classify(status, message, parsedBody, errorKind);
     }
 
@@ -83,10 +90,12 @@ public class OpenWAApiError extends OpenWAError {
         }
         if (message.isJsonArray()) {
             return StreamSupport.stream(message.getAsJsonArray().spliterator(), false)
-                .map(JsonElement::getAsString)
+                .map(el -> el.isJsonPrimitive() ? el.getAsString() : el.toString())
                 .collect(Collectors.joining(", "));
         }
-        return message.getAsString();
+        // Guard against a non-primitive `message` (e.g. a nested object in a non-NestJS body): getAsString()
+        // would throw, and throwing while constructing an error is worse than a slightly-verbose message.
+        return message.isJsonPrimitive() ? message.getAsString() : message.toString();
     }
 
     /** Construct the most specific subclass for a status code. */
