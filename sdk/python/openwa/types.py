@@ -22,7 +22,7 @@ DeliveryStatus = Literal["pending", "sent", "delivered", "read", "failed"]
 BulkMessageType = Literal["text", "image", "video", "audio", "document"]
 WebhookEvent = Literal[
     "message.received", "message.sent", "message.ack", "message.failed", "message.revoked",
-    "message.reaction", "session.status", "session.qr", "session.authenticated",
+    "message.reaction", "message.edited", "session.status", "session.qr", "session.authenticated",
     "session.disconnected",
     # Reserved: accepted on subscribe but not dispatched yet.
     "group.join", "group.leave", "group.update",

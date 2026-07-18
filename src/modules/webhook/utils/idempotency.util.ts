@@ -57,7 +57,10 @@ export function generateIdempotencyKey(event: string, data: Record<string, unkno
       return `rev_${toStr(data.sessionId)}_${toStr(data.id ?? data.messageId)}`;
 
     case 'message.edited':
-      return `edit_${toStr(data.sessionId)}_${toStr(data.messageId)}_${toStr(data.timestamp)}`;
+      // Editing the same message multiple times should produce different idempotency keys.
+      // Salt with occurredAt (captured once per dispatch, reused across retries) so distinct occurrences
+      // get distinct keys, while retries of the same delivery stay stable.
+      return `edit_${toStr(data.sessionId)}_${toStr(data.messageId)}${occurrence}`;
 
     case 'message.reaction':
       // A reaction carries no unique id and is a read-modify-write of the message's reactions map; the

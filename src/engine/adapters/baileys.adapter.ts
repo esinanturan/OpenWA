@@ -15,6 +15,7 @@ import {
   ContactCard,
   EngineEventCallbacks,
   EngineStatus,
+  EditedMessage,
   Group,
   GroupInfo,
   IncomingMessage,
@@ -1102,12 +1103,14 @@ export class BaileysAdapter implements IWhatsAppEngine {
           return;
         }
         if (pm?.type === b.proto.Message.ProtocolMessage.Type.MESSAGE_EDIT) {
-          const body = pm.editedMessage?.conversation || pm.editedMessage?.extendedTextMessage?.text || '';
+          const body = extractBaileysBody(pm.editedMessage ?? {});
           const edited: EditedMessage = {
             messageId: pm.key?.id ?? '',
             chatId: this.sessionStore.toNeutralJid(remoteJid),
             body,
-            senderId: this.sessionStore.toNeutralJid(msg.key.participant ?? remoteJid),
+            senderId: this.sessionStore.toNeutralJid(
+              msg.key.fromMe === true ? this.normalizedSelfJid() : (msg.key.participant ?? remoteJid),
+            ),
             timestamp: this.toUnixSeconds(msg.messageTimestamp),
           };
           this.callbacks.onMessageEdited?.(edited);

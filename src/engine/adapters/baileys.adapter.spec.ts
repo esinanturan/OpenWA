@@ -83,7 +83,7 @@ jest.mock('@whiskeysockets/baileys', () => ({
   proto: {
     Message: {
       ProtocolMessage: {
-        Type: { REVOKE: 0 },
+        Type: { REVOKE: 0, MESSAGE_EDIT: 14 },
       },
     },
   },
@@ -1492,6 +1492,95 @@ describe('BaileysAdapter inbound fan-out', () => {
     expect(edited.body).toBe('New edited message text');
     expect(edited.senderId).toBe('628111@c.us');
     expect(edited.timestamp).toBe(1700000030);
+  });
+
+  it('EDIT protocolMessage: extracts media caption correctly (e.g. image caption)', async () => {
+    // eslint-disable-next-line @typescript-eslint/no-unnecessary-type-assertion
+    const baileys = jest.requireMock('@whiskeysockets/baileys') as { getContentType: jest.Mock };
+    baileys.getContentType.mockReturnValue('protocolMessage');
+
+    const onMessage = jest.fn();
+    const onMessageEdited = jest.fn();
+    const adapter = newAdapter();
+    await adapter.initialize({ onMessage, onMessageEdited });
+    fakeSock.fire('messages.upsert', {
+      type: 'notify',
+      messages: [
+        {
+          key: { remoteJid: '628111@s.whatsapp.net', participant: '628111@s.whatsapp.net', fromMe: false, id: 'PROTO_EDIT_MEDIA' },
+          message: {
+            protocolMessage: {
+              key: { id: 'ORIGINAL_MSG_ID' },
+              type: 14, // MESSAGE_EDIT
+              editedMessage: {
+                imageMessage: { caption: 'Edited image caption text' },
+              },
+            },
+          },
+          messageTimestamp: 1700000035,
+        },
+      ],
+    });
+    await new Promise(r => setImmediate(r));
+    expect(onMessage).not.toHaveBeenCalled();
+    expect(onMessageEdited).toHaveBeenCalledTimes(1);
+
+    const edited = onMessageEdited.mock.calls[0][0] as {
+      messageId: string;
+      chatId: string;
+      body: string;
+      senderId: string;
+      timestamp: number;
+    };
+    expect(edited.messageId).toBe('ORIGINAL_MSG_ID');
+    expect(edited.chatId).toBe('628111@c.us');
+    expect(edited.body).toBe('Edited image caption text');
+    expect(edited.senderId).toBe('628111@c.us');
+    expect(edited.timestamp).toBe(1700000035);
+  });
+
+  it('EDIT protocolMessage: correctly maps senderId for own outgoing edits (fromMe = true)', async () => {
+    // eslint-disable-next-line @typescript-eslint/no-unnecessary-type-assertion
+    const baileys = jest.requireMock('@whiskeysockets/baileys') as { getContentType: jest.Mock };
+    baileys.getContentType.mockReturnValue('protocolMessage');
+    fakeSock.user = { id: '628999:1@s.whatsapp.net', name: 'Me' };
+
+    const onMessage = jest.fn();
+    const onMessageEdited = jest.fn();
+    const adapter = newAdapter();
+    await adapter.initialize({ onMessage, onMessageEdited });
+    fakeSock.fire('messages.upsert', {
+      type: 'notify',
+      messages: [
+        {
+          key: { remoteJid: '628111@s.whatsapp.net', fromMe: true, id: 'PROTO_EDIT_SELF' },
+          message: {
+            protocolMessage: {
+              key: { id: 'ORIGINAL_MSG_ID' },
+              type: 14, // MESSAGE_EDIT
+              editedMessage: { conversation: 'Self-edited text' },
+            },
+          },
+          messageTimestamp: 1700000040,
+        },
+      ],
+    });
+    await new Promise(r => setImmediate(r));
+    expect(onMessage).not.toHaveBeenCalled();
+    expect(onMessageEdited).toHaveBeenCalledTimes(1);
+
+    const edited = onMessageEdited.mock.calls[0][0] as {
+      messageId: string;
+      chatId: string;
+      body: string;
+      senderId: string;
+      timestamp: number;
+    };
+    expect(edited.messageId).toBe('ORIGINAL_MSG_ID');
+    expect(edited.chatId).toBe('628111@c.us');
+    expect(edited.body).toBe('Self-edited text');
+    expect(edited.senderId).toBe('628999@c.us');
+    expect(edited.timestamp).toBe(1700000040);
   });
 
   it('reactionMessage: fires onMessageReaction and NOT onMessage', async () => {

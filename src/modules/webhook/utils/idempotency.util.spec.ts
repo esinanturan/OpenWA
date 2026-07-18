@@ -142,6 +142,28 @@ describe('Idempotency Utils', () => {
       expect(a).not.toBe(b);
     });
 
+    it('salts message.edited keys so an edit (same message, later time) is a distinct event', () => {
+      const a = generateIdempotencyKey(
+        'message.edited',
+        { sessionId: 'A', messageId: 'MSG1' },
+        '2026-06-20T00:00:00.000Z',
+      );
+      const b = generateIdempotencyKey(
+        'message.edited',
+        { sessionId: 'A', messageId: 'MSG1' },
+        '2026-06-20T00:05:00.000Z',
+      );
+      expect(a).not.toBe(b);
+    });
+
+    it('is retry-stable for message.edited: the same occurrence regenerates the same key', () => {
+      const at = '2026-06-20T00:00:00.000Z';
+      const data = { sessionId: 'A', messageId: 'MSG1' };
+      expect(generateIdempotencyKey('message.edited', data, at)).toBe(
+        generateIdempotencyKey('message.edited', data, at),
+      );
+    });
+
     it('should generate key for group.join', () => {
       const key = generateIdempotencyKey('group.join', {
         groupId: 'grp_1',

@@ -33,6 +33,7 @@ import {
   ChatState,
   DeliveryStatus,
   RevokedMessage,
+  EditedMessage,
   ReactionEvent,
 } from '../interfaces/whatsapp-engine.interface';
 import { resolveWebVersionPin } from '../wa-web-version';
@@ -696,7 +697,7 @@ export class WhatsAppWebJsAdapter extends EventEmitter implements IWhatsAppEngin
         const payload: EditedMessage = {
           messageId: message.id._serialized,
           chatId: message.from === this.client?.info?.wid?._serialized ? message.to : message.from,
-          body: newBody,
+          body: String(newBody),
           senderId: message.author || message.from,
           timestamp: message.timestamp,
         };
