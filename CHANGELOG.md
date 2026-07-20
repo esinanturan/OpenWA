@@ -20,6 +20,9 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
   subtitle for personal chats — with the raw JID retained on a muted monospace line for technical
   use (lid resolution, webhook payloads, group ids). The composer send icon was also enlarged to
   better match its 48 px button.
+- The linked-device name shown in WhatsApp's Settings → Linked Devices is now brandable via the
+  optional `BAILEYS_BROWSER_NAME` env var (applies to new pairings; default unchanged: `OpenWA`).
+  Thanks @clicsoluciones. (#822)
 
 ### Fixed
 
