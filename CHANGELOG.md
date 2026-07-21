@@ -7,6 +7,24 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+## [0.10.4] - 2026-07-21
+
+> ⚠️ **Use this release, not `0.10.3`.** The `0.10.3` container image does not start: its
+> `sqlite3` native binary was built against glibc 2.38 while the runtime image (`node:22-slim`,
+> Debian bookworm) provides 2.36, so the driver failed to load and the app could not reach its
+> database. The release gate caught it on both architectures and the GitHub release was never
+> published, but the image had already been pushed. `0.10.4` contains the same features and
+> fixes as `0.10.3` plus the correction below.
+
+### Fixed
+
+- **The container image starts again.** `sqlite3` stays on the `5.x` line, whose prebuilt
+  binaries match the Debian bookworm runtime, instead of the `6.x` line whose prebuilds require
+  a newer glibc than the base image provides. The dependency advisories that motivated the
+  original bump are still resolved — `node-gyp` and `tar` are pinned forward through `overrides`
+  so the vulnerable `tar` never enters the tree, leaving `npm audit` clean without changing the
+  driver. Verified by building the production image and booting it, not only by the test suite.
+
 ## [0.10.3] - 2026-07-21
 
 Patch release: new group, call, profile and message-edit capabilities, plus stricter reading
