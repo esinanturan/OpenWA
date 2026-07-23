@@ -725,7 +725,17 @@
         ],
         "responses": {
           "200": {
-            "description": "List of active chats (most recent first)"
+            "description": "List of active chats (most recent first)",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/ChatSummaryDto"
+                  }
+                }
+              }
+            }
           },
           "400": {
             "description": "Session not ready"
@@ -6196,6 +6206,58 @@
         "required": [
           "pairingCode",
           "status"
+        ]
+      },
+      "ChatSummaryDto": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "string",
+            "example": "628111@c.us"
+          },
+          "name": {
+            "type": "string",
+            "example": "Alice"
+          },
+          "isGroup": {
+            "type": "boolean",
+            "description": "Retained for back-compat; true for @g.us chats.",
+            "example": false
+          },
+          "kind": {
+            "type": "string",
+            "enum": [
+              "individual",
+              "group",
+              "channel",
+              "status",
+              "broadcast",
+              "unknown"
+            ],
+            "description": "User-facing chat kind.",
+            "example": "individual"
+          },
+          "unreadCount": {
+            "type": "number",
+            "example": 1
+          },
+          "timestamp": {
+            "type": "number",
+            "description": "Unix seconds of the last activity.",
+            "example": 1700000010
+          },
+          "lastMessage": {
+            "type": "string",
+            "example": "hi"
+          }
+        },
+        "required": [
+          "id",
+          "name",
+          "isGroup",
+          "kind",
+          "unreadCount",
+          "timestamp"
         ]
       },
       "MarkChatReadDto": {
