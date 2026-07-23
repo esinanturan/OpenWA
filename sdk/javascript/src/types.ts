@@ -552,7 +552,7 @@ export interface ChatSummary {
   /** Preview text of the last message (the server returns a plain string, not an object). */
   lastMessage?: string;
   timestamp?: string | number;
-  kind: ChatKind;
+  kind?: ChatKind;
 }
 
 export interface MarkChatRequest {
