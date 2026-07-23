@@ -1122,11 +1122,13 @@ export function Chats() {
                         <div className="chat-item-top">
                           <span className="chat-item-name">{ch.name}</span>
                         </div>
-                        <div className="chat-item-bottom">
-                          <span className="chat-item-snippet">
-                            {t('chats.channels.subscribers', { count: ch.subscriberCount ?? 0 })}
-                          </span>
-                        </div>
+                        {ch.subscriberCount != null && (
+                          <div className="chat-item-bottom">
+                            <span className="chat-item-snippet">
+                              {t('chats.channels.subscribers', { count: ch.subscriberCount })}
+                            </span>
+                          </div>
+                        )}
                       </div>
                     </div>
                   ))
@@ -1575,7 +1577,7 @@ export function Chats() {
                     (channelMessages.data ?? []).map(m => (
                       <div key={m.id} className="message-bubble incoming">
                         {m.hasMedia && m.mediaUrl && <img className="channel-media" src={m.mediaUrl} alt="" />}
-                        {m.body && <div className="message-text">{m.body}</div>}
+                        {m.body && <MessageBody text={m.body} className="message-text" />}
                         <span className="message-time">{formatChatTime(m.timestamp)}</span>
                       </div>
                     ))
