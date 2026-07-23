@@ -111,6 +111,27 @@
     "deleteConfirm": "모두에게서 이 메시지를 삭제할까요?",
     "messageDeleted": "🚫 삭제된 메시지입니다",
     "messageMasked": "🔒 연결된 기기에서는 WhatsApp이 이 메시지를 가려 표시합니다 — 기본 휴대폰을 확인하세요",
+    "kind": {
+      "group": "그룹",
+      "channel": "채널",
+      "status": "상태",
+      "broadcast": "브로드캐스트"
+    },
+    "tab": {
+      "chats": "채팅",
+      "channels": "채널",
+      "status": "상태"
+    },
+    "status": {
+      "placeholderTitle": "상태",
+      "placeholderDesc": "연락처별 상태 업데이트는 향후 업데이트에서 제공될 예정입니다."
+    },
+    "channels": {
+      "notSupported": "Baileys 엔진에서는 채널을 지원하지 않습니다.",
+      "empty": "아직 구독 중인 채널이 없습니다.",
+      "notReady": "세션이 아직 준비되지 않았습니다.",
+      "subscribers": "구독자 {{count}}명"
+    },
     "errors": {
       "loadSessions": "세션을 불러오지 못했습니다",
       "loadChats": "채팅을 불러오지 못했습니다",

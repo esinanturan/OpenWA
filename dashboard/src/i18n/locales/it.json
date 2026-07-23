@@ -111,6 +111,27 @@
     "deleteConfirm": "Eliminare questo messaggio per tutti?",
     "messageDeleted": "🚫 Questo messaggio è stato eliminato",
     "messageMasked": "🔒 Nascosto da WhatsApp sui dispositivi collegati — controlla sul telefono principale",
+    "kind": {
+      "group": "Gruppo",
+      "channel": "Canale",
+      "status": "Stato",
+      "broadcast": "Trasmissione"
+    },
+    "tab": {
+      "chats": "Chat",
+      "channels": "Canali",
+      "status": "Stato"
+    },
+    "status": {
+      "placeholderTitle": "Stato",
+      "placeholderDesc": "Gli aggiornamenti di stato per contatto arriveranno in un aggiornamento futuro."
+    },
+    "channels": {
+      "notSupported": "I canali non sono supportati sul motore Baileys.",
+      "empty": "Non sei ancora iscritto a nessun canale.",
+      "notReady": "La sessione non è ancora pronta.",
+      "subscribers": "{{count}} iscritti"
+    },
     "errors": {
       "loadSessions": "Impossibile caricare le sessioni",
       "loadChats": "Impossibile caricare le chat",

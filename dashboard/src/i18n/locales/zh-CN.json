@@ -111,6 +111,27 @@
     "deleteConfirm": "为所有人删除此消息？",
     "messageDeleted": "🚫 此消息已被删除",
     "messageMasked": "🔒 WhatsApp 已对关联设备隐藏此消息 — 请在主手机上查看",
+    "kind": {
+      "group": "群组",
+      "channel": "频道",
+      "status": "状态",
+      "broadcast": "广播"
+    },
+    "tab": {
+      "chats": "聊天",
+      "channels": "频道",
+      "status": "状态"
+    },
+    "status": {
+      "placeholderTitle": "状态",
+      "placeholderDesc": "单个联系人的状态更新将在未来版本中推出。"
+    },
+    "channels": {
+      "notSupported": "Baileys 引擎不支持频道。",
+      "empty": "你尚未订阅任何频道。",
+      "notReady": "会话尚未就绪。",
+      "subscribers": "{{count}} 位订阅者"
+    },
     "errors": {
       "loadSessions": "加载会话失败",
       "loadChats": "加载聊天失败",

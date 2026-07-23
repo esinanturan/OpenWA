@@ -111,6 +111,27 @@
     "deleteConfirm": "為所有人刪除此訊息？",
     "messageDeleted": "🚫 此訊息已被刪除",
     "messageMasked": "🔒 WhatsApp 已對已連結裝置隱藏此訊息 — 請在主手機上查看",
+    "kind": {
+      "group": "群組",
+      "channel": "頻道",
+      "status": "狀態",
+      "broadcast": "廣播"
+    },
+    "tab": {
+      "chats": "聊天",
+      "channels": "頻道",
+      "status": "狀態"
+    },
+    "status": {
+      "placeholderTitle": "狀態",
+      "placeholderDesc": "個別聯絡人的狀態更新將於日後更新中推出。"
+    },
+    "channels": {
+      "notSupported": "Baileys 引擎不支援頻道。",
+      "empty": "你尚未訂閱任何頻道。",
+      "notReady": "工作階段尚未就緒。",
+      "subscribers": "{{count}} 位訂閱者"
+    },
     "errors": {
       "loadSessions": "載入工作階段失敗",
       "loadChats": "載入聊天失敗",

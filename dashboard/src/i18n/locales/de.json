@@ -111,6 +111,27 @@
     "deleteConfirm": "Diese Nachricht für alle löschen?",
     "messageDeleted": "🚫 Diese Nachricht wurde gelöscht",
     "messageMasked": "🔒 Von WhatsApp für verknüpfte Geräte ausgeblendet — prüfe dein Haupttelefon",
+    "kind": {
+      "group": "Gruppe",
+      "channel": "Kanal",
+      "status": "Status",
+      "broadcast": "Broadcast"
+    },
+    "tab": {
+      "chats": "Chats",
+      "channels": "Kanäle",
+      "status": "Status"
+    },
+    "status": {
+      "placeholderTitle": "Status",
+      "placeholderDesc": "Status-Updates pro Kontakt werden in einem zukünftigen Update verfügbar sein."
+    },
+    "channels": {
+      "notSupported": "Kanäle werden von der Baileys-Engine nicht unterstützt.",
+      "empty": "Du hast noch keine Kanäle abonniert.",
+      "notReady": "Die Sitzung ist noch nicht bereit.",
+      "subscribers": "{{count}} Abonnenten"
+    },
     "errors": {
       "loadSessions": "Sitzungen konnten nicht geladen werden",
       "loadChats": "Chats konnten nicht geladen werden",

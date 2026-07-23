@@ -111,6 +111,27 @@
     "deleteConfirm": "למחוק הודעה זו עבור כולם?",
     "messageDeleted": "🚫 הודעה זו נמחקה",
     "messageMasked": "🔒 הוסתר על ידי וואטסאפ במכשירים המקושרים — בדוק בטלפון הראשי שלך",
+    "kind": {
+      "group": "קבוצה",
+      "channel": "ערוץ",
+      "status": "סטטוס",
+      "broadcast": "שידור"
+    },
+    "tab": {
+      "chats": "שיחות",
+      "channels": "ערוצים",
+      "status": "סטטוס"
+    },
+    "status": {
+      "placeholderTitle": "סטטוס",
+      "placeholderDesc": "עדכוני סטטוס לפי איש קשר יגיעו בעדכון עתידי."
+    },
+    "channels": {
+      "notSupported": "ערוצים אינם נתמכים במנוע Baileys.",
+      "empty": "עדיין אינך רשום/ה לאף ערוץ.",
+      "notReady": "הסשן עדיין אינו מוכן.",
+      "subscribers": "{{count}} מנויים"
+    },
     "errors": {
       "loadSessions": "טעינת הסשנים נכשלה",
       "loadChats": "טעינת השיחות נכשלה",

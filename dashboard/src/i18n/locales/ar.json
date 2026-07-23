@@ -111,6 +111,27 @@
     "deleteConfirm": "حذف هذه الرسالة للجميع؟",
     "messageDeleted": "🚫 تم حذف هذه الرسالة",
     "messageMasked": "🔒 أخفته واتساب على الأجهزة المرتبطة — تحقق منه على هاتفك الأساسي",
+    "kind": {
+      "group": "مجموعة",
+      "channel": "قناة",
+      "status": "الحالة",
+      "broadcast": "بث"
+    },
+    "tab": {
+      "chats": "المحادثات",
+      "channels": "القنوات",
+      "status": "الحالة"
+    },
+    "status": {
+      "placeholderTitle": "الحالة",
+      "placeholderDesc": "ستتوفر تحديثات الحالة لكل جهة اتصال في تحديث مستقبلي."
+    },
+    "channels": {
+      "notSupported": "القنوات غير مدعومة على محرك Baileys.",
+      "empty": "أنت غير مشترك في أي قناة حتى الآن.",
+      "notReady": "الجلسة ليست جاهزة بعد.",
+      "subscribers": "{{count}} مشترك"
+    },
     "errors": {
       "loadSessions": "فشل تحميل الجلسات",
       "loadChats": "فشل تحميل المحادثات",

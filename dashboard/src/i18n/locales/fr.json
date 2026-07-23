@@ -111,6 +111,27 @@
     "deleteConfirm": "Supprimer ce message pour tout le monde ?",
     "messageDeleted": "🚫 Ce message a été supprimé",
     "messageMasked": "🔒 Masqué par WhatsApp sur les appareils liés — consultez votre téléphone principal",
+    "kind": {
+      "group": "Groupe",
+      "channel": "Chaîne",
+      "status": "Statut",
+      "broadcast": "Diffusion"
+    },
+    "tab": {
+      "chats": "Discussions",
+      "channels": "Chaînes",
+      "status": "Statut"
+    },
+    "status": {
+      "placeholderTitle": "Statut",
+      "placeholderDesc": "Les mises à jour de statut par contact arriveront dans une future mise à jour."
+    },
+    "channels": {
+      "notSupported": "Les chaînes ne sont pas prises en charge par le moteur Baileys.",
+      "empty": "Vous n'êtes abonné à aucune chaîne pour le moment.",
+      "notReady": "La session n'est pas encore prête.",
+      "subscribers": "{{count}} abonnés"
+    },
     "errors": {
       "loadSessions": "Échec du chargement des sessions",
       "loadChats": "Échec du chargement des discussions",

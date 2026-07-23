@@ -111,6 +111,27 @@
     "deleteConfirm": "ఈ సందేశాన్ని అందరి కోసం తొలగించాలా?",
     "messageDeleted": "🚫 ఈ సందేశం తొలగించబడింది",
     "messageMasked": "🔒 లింక్ చేసిన పరికరాల్లో WhatsApp దీన్ని దాచింది — మీ ప్రధాన ఫోన్‌లో చూడండి",
+    "kind": {
+      "group": "సమూహం",
+      "channel": "ఛానెల్",
+      "status": "స్థితి",
+      "broadcast": "ప్రసారం"
+    },
+    "tab": {
+      "chats": "చాట్‌లు",
+      "channels": "ఛానెల్‌లు",
+      "status": "స్థితి"
+    },
+    "status": {
+      "placeholderTitle": "స్థితి",
+      "placeholderDesc": "Per-contact status updates arrive in a future update."
+    },
+    "channels": {
+      "notSupported": "Channels are not supported on the Baileys engine.",
+      "empty": "You are not subscribed to any channels yet.",
+      "notReady": "సెషన్ ఇంకా సిద్ధంగా లేదు.",
+      "subscribers": "{{count}} సబ్‌స్క్రైబర్‌లు"
+    },
     "errors": {
       "loadSessions": "సెషన్లను లోడ్ చేయడం విఫలమైంది",
       "loadChats": "చాట్‌లను లోడ్ చేయడం విఫలమైంది",

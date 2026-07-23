@@ -111,6 +111,27 @@
     "deleteConfirm": "Excluir esta mensagem para todos?",
     "messageDeleted": "🚫 Esta mensagem foi excluída",
     "messageMasked": "🔒 Ocultada pelo WhatsApp em dispositivos vinculados — verifique no seu telefone principal",
+    "kind": {
+      "group": "Grupo",
+      "channel": "Canal",
+      "status": "Status",
+      "broadcast": "Transmissão"
+    },
+    "tab": {
+      "chats": "Chats",
+      "channels": "Canais",
+      "status": "Status"
+    },
+    "status": {
+      "placeholderTitle": "Status",
+      "placeholderDesc": "As atualizações de status por contato chegarão em uma atualização futura."
+    },
+    "channels": {
+      "notSupported": "Os canais não são compatíveis com o mecanismo Baileys.",
+      "empty": "Você ainda não está inscrito em nenhum canal.",
+      "notReady": "A sessão ainda não está pronta.",
+      "subscribers": "{{count}} inscritos"
+    },
     "errors": {
       "loadSessions": "Erro ao carregar as sessões",
       "loadChats": "Erro ao carregar os chats",

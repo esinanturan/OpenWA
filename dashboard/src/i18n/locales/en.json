@@ -111,6 +111,27 @@
     "deleteConfirm": "Delete this message for everyone?",
     "messageDeleted": "🚫 This message was deleted",
     "messageMasked": "🔒 Masked by WhatsApp for linked devices — check your primary phone",
+    "kind": {
+      "group": "Group",
+      "channel": "Channel",
+      "status": "Status",
+      "broadcast": "Broadcast"
+    },
+    "tab": {
+      "chats": "Chats",
+      "channels": "Channels",
+      "status": "Status"
+    },
+    "status": {
+      "placeholderTitle": "Status",
+      "placeholderDesc": "Per-contact status updates arrive in a future update."
+    },
+    "channels": {
+      "notSupported": "Channels are not supported on the Baileys engine.",
+      "empty": "You are not subscribed to any channels yet.",
+      "notReady": "Session is not ready yet.",
+      "subscribers": "{{count}} subscribers"
+    },
     "errors": {
       "loadSessions": "Failed to load sessions",
       "loadChats": "Failed to load chats",
